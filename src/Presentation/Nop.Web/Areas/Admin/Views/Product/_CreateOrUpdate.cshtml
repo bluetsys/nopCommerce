@@ -1,20 +1,22 @@
 ﻿@model ProductModel
 
 @{
+    var showTour = ViewBag.ShowTour ?? false;
+
     const string hideInfoBlockAttributeName = "ProductPage.HideInfoBlock";
-    var hideInfoBlock = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hideInfoBlockAttributeName);
+    var hideInfoBlock = showTour ? false : await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hideInfoBlockAttributeName);
 
     const string hidePricesBlockAttributeName = "ProductPage.HidePricesBlock";
-    var hidePricesBlock = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hidePricesBlockAttributeName);
+    var hidePricesBlock = showTour ? false : await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hidePricesBlockAttributeName);
 
     const string hideShippingBlockAttributeName = "ProductPage.HideShippingBlock";
-    var hideShippingBlock = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hideShippingBlockAttributeName);
+    var hideShippingBlock = showTour ? false : await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hideShippingBlockAttributeName);
 
     const string hideInventoryBlockAttributeName = "ProductPage.HideInventoryBlock";
-    var hideInventoryBlock = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hideInventoryBlockAttributeName);
+    var hideInventoryBlock = showTour ? false : await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hideInventoryBlockAttributeName);
 
     const string hidePicturesBlockAttributeName = "ProductPage.HidePicturesBlock";
-    var hidePicturesBlock = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hidePicturesBlockAttributeName);
+    var hidePicturesBlock = showTour ? false : await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hidePicturesBlockAttributeName);
 
     const string hideProductAttributesBlockAttributeName = "ProductPage.HideProductAttributesBlock";
     var hideProductAttributesBlock = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hideProductAttributesBlockAttributeName, defaultValue: true);
