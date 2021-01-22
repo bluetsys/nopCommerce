@@ -1,17 +1,16 @@
 ﻿@inject Nop.Services.Stores.IStoreService storeService
 @inject Nop.Services.Common.IGenericAttributeService genericAttributeService
 @inject IWorkContext workContext
+@using Nop.Core.Domain.Customers
 
 @{
   const string cardId = "configuration-steps-card";
 
   //hide value
-  const string hideCardAttributeName = "HideConfigurationSteps";
-  var hideCard = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), hideCardAttributeName);
+  var hideCard = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), NopCustomerDefaults.HideConfigurationStepsAttribute);
 
   //close value
-  const string closeCardAttributeName = "CloseConfigurationSteps";
-  var closeCard = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), closeCardAttributeName);
+  var closeCard = await genericAttributeService.GetAttributeAsync<bool>(await workContext.GetCurrentCustomerAsync(), NopCustomerDefaults.CloseConfigurationStepsAttribute);
 
   var defaultStoreId = (await storeService.GetAllStoresAsync()).FirstOrDefault()?.Id ?? 0;
 }
@@ -42,12 +41,12 @@
         $(document).ready(function () {
             $('#@cardId').on('click', 'button[data-card-widget="collapse"]', function () {
                 var collapsed = !$('#@cardId').hasClass('collapsed-card');
-                saveUserPreferences('@(Url.Action("SavePreference", "Preferences"))', '@hideCardAttributeName', collapsed);
+                saveUserPreferences('@(Url.Action("SavePreference", "Preferences"))', '@NopCustomerDefaults.HideConfigurationStepsAttribute', collapsed);
             });
 
             $('#@cardId').on('click', 'button[data-card-widget="remove"]', function () {
                 var collapsed = !$('#@cardId').hasClass('collapsed-card');
-                saveUserPreferences('@(Url.Action("SavePreference", "Preferences"))', '@closeCardAttributeName', collapsed);
+                saveUserPreferences('@(Url.Action("SavePreference", "Preferences"))', '@NopCustomerDefaults.CloseConfigurationStepsAttribute', collapsed);
             });
         });
     </script>
