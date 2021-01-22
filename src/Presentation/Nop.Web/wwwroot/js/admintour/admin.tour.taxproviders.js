@@ -2,13 +2,17 @@
   $('#tax-providers-grid').on('draw.dt', function () {
     const tour = new Shepherd.Tour(AdminTourCommonTourOptions);
 
-    AdminTourNextPageButton.action = function () { window.location = '/Admin/FixedOrByCountryStateZip/Configure?showtour=true' };
-
     var manualMethodRowId = 'row_taxfixedorbycountrystatezip';
     var avalaraMethodRowId = 'row_taxavalara';
 
     var manualMethodExists = $('#' + manualMethodRowId).length;
     var avalaraMethodExists = $('#' + avalaraMethodRowId).length;
+
+    if (manualMethodExists) {
+      AdminTourNextPageButton.action = function () { window.location = '/Admin/FixedOrByCountryStateZip/Configure?showtour=true' };
+    } else {
+      AdminTourNextPageButton.action = function () { window.location = '/Admin/Product/Create?showtour=True' };
+    }
 
     //'Tax providers' step
     var taxProvidersStepButtons = [];
@@ -28,8 +32,8 @@
       buttons: taxProvidersStepButtons
     });
 
-    //'Avalara tax provider' step
     if (avalaraMethodExists) {
+      //'Avalara tax provider' step
       tour.addStep({
         title: AdminTourDataProvider.localized_data.TaxProvidersAvalaraTitle,
         text: AdminTourDataProvider.localized_data.TaxProvidersAvalaraText,
@@ -39,10 +43,23 @@
         },
         buttons: [AdminTourBackButton, AdminTourNextButton]
       });
+
+      //'Mark as a primary provider' step
+      if (!manualMethodExists) {
+        tour.addStep({
+          title: AdminTourDataProvider.localized_data.TaxProvidersPrimaryProviderTitle,
+          text: AdminTourDataProvider.localized_data.TaxProvidersPrimaryProviderText,
+          attachTo: {
+            element: '#' + avalaraMethodRowId + ' .column-primary .btn',
+            on: 'bottom'
+          },
+          buttons: [AdminTourBackButton, AdminTourNextPageButton]
+        });
+      }
     }
 
-    //'Manual tax provider' step
     if (manualMethodExists) {
+      //'Manual tax provider' step
       tour.addStep({
         title: AdminTourDataProvider.localized_data.TaxProvidersManualTitle,
         text: AdminTourDataProvider.localized_data.TaxProvidersManualText,
@@ -52,10 +69,8 @@
         },
         buttons: [AdminTourBackButton, AdminTourNextButton]
       });
-    }
 
-    //'Mark as a primary provider' step
-    if (manualMethodExists) {
+      //'Mark as a primary provider' step
       tour.addStep({
         title: AdminTourDataProvider.localized_data.TaxProvidersPrimaryProviderTitle,
         text: AdminTourDataProvider.localized_data.TaxProvidersPrimaryProviderText,
@@ -65,10 +80,8 @@
         },
         buttons: [AdminTourBackButton, AdminTourNextButton]
       });
-    }
 
-    //Redirect to Manual
-    if (manualMethodExists) {
+      //Redirect to Manual
       tour.addStep({
         canClickTarget: true,
         title: AdminTourDataProvider.localized_data.TaxProvidersConfigureTitle,

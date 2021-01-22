@@ -2,13 +2,17 @@
   $('#shippingproviders-grid').on('draw.dt', function () {
     const tour = new Shepherd.Tour(AdminTourCommonTourOptions);
 
-    AdminTourNextPageButton.action = function () { window.location = '/Admin/FixedByWeightByTotal/Configure?showtour=true' };
-
     var manualMethodRowId = 'row_shippingfixedbyweightbytotal';
     var shipStationMethodRowId = 'row_shippingshipstation';
 
     var manualMethodExists = $('#' + manualMethodRowId).length;
     var shipStationMethodExists = $('#' + shipStationMethodRowId).length;
+
+    if (manualMethodExists) {
+      AdminTourNextPageButton.action = function () { window.location = '/Admin/FixedByWeightByTotal/Configure?showtour=true' };
+    } else {
+      AdminTourNextPageButton.action = function () { window.location = '/Admin/Payment/Methods?showtour=True' };
+    }
 
     //'Set up shipping' step
     var shippingMethodStepButtons = [];
