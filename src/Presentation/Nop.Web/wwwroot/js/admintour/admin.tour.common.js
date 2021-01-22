@@ -38,10 +38,11 @@
           if (nextPageButton.length) {
             tour.options.keyboardNavigation = false;
 
-            $(document).on('keydown', function (e) {
+            $(document).on('keydown.admintour', function (e) {
               if (e.keyCode == 37) {
                 tour.back();
                 tour.options.keyboardNavigation = true;
+                $(document).off('keydown.admintour');
               }
             });
           }
