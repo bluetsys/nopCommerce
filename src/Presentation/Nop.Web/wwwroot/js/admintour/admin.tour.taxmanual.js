@@ -39,6 +39,15 @@
       buttons: [AdminTourBackButton, AdminTourNextButton]
     });
 
+    var firstEditButtonSelector = '#tax-categories-grid tr .column-edit .btn-default';
+    var buttons = [];
+
+    if ($(firstEditButtonSelector).length) {
+      buttons = [AdminTourBackButton, AdminTourNextButton]
+    } else {
+      buttons = [AdminTourBackButton, AdminTourNextPageButton]
+    }
+
     //'Tax categories' step
     tour.addStep({
       title: AdminTourDataProvider.localized_data.TaxManualCategoriesTitle,
@@ -47,18 +56,16 @@
         element: '#tax-categories-grid_wrapper',
         on: 'bottom'
       },
-      buttons: [AdminTourBackButton, AdminTourNextButton]
+      buttons: buttons
     });
 
     //'Edit rate' step
-    var firstEditButtonId = "buttonEdit_tax_categories_grid1";
-
-    if ($('#' + firstEditButtonId).length) {
+    if ($(firstEditButtonSelector).length) {
       tour.addStep({
         title: AdminTourDataProvider.localized_data.TaxManualEditTitle,
         text: AdminTourDataProvider.localized_data.TaxManualEditText,
         attachTo: {
-          element: '#' + firstEditButtonId,
+          element: firstEditButtonSelector,
           on: 'bottom'
         },
         buttons: [AdminTourBackButton, AdminTourNextPageButton]
